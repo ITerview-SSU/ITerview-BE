@@ -1,5 +1,5 @@
 spring:
-  database:
+  datasource:
     url: jdbc:h2:tcp://localhost/~/iterview
     username: sa
     password:
