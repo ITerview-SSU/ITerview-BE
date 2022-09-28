@@ -4,14 +4,23 @@ spring:
     username: sa
     password:
     driver-class-name: org.h2.Driver
+
   jpa:
     hibernate:
       ddl-auto: create # 애플리케이션 실행 시점에 테이블 모두 지우고 다시 생성
     properties:
       hibernate:
         format_sql: true
+        dialect: org.hibernate.dialect.H2Dialect
       # show_sql: true  #얘는 System.out에 출력
 
 
 logging.level:
-  org.hibernate:SQL: debug # 얘는 로그를 통해서 출력
+  org.hibernate.SQL: debug # 얘는 로그를 통해서 출력
+  org.hibernate.type: trace
+
+
+# JWT
+jwt:
+  secret: SEUNGWOOJOO
+  access-expired: 1800 # 30(분) - 단위 (초)
