@@ -6,12 +6,21 @@ spring:
     driver-class-name: org.h2.Driver
   jpa:
     hibernate:
-      ddl-auto: create # 애플리케이션 실행 시점에 테이블 모두 지우고 다시 생성
+      ddl-auto: update # 애플리케이션 실행 시점에 테이블 모두 지우고 다시 생성
     properties:
       hibernate:
         format_sql: true
-      # show_sql: true  #얘는 System.out에 출력
+        show_sql: true  #얘는 System.out에 출력
 
 
 logging.level:
   org.hibernate:SQL: debug # 얘는 로그를 통해서 출력
+
+jwt:
+  header: Authorization
+  secret: kamadotanjirokamadotanjirokamadotanjirokamadotanjirokamadotanjirokamadotanjirokamadotanjirokamadotanjiro
+  access-token-expire-time: 1800000
+  refresh-token-expire-time: 604800000
+
+cors:
+  allowURL: http://127.0.0.1:8080
