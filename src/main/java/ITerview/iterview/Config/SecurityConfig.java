@@ -44,6 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { // WebSecurit
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(customEmailPasswordAuthProvider);
     }
+
     // h2 database 테스트가 원활하도록 관련 API 들은 전부 무시
     @Override
     public void configure(WebSecurity web) {
@@ -81,14 +82,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { // WebSecurit
                 .authorizeRequests() // http servletRequest 를 사용하는 요청들에 대한 접근제한을 설정
                 .antMatchers("/auth/**").permitAll()
                 .antMatchers("/v3/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**").permitAll() // swagger3
+//                .anyRequest().authenticated() ; // 나머지 API 는 전부 인증 필요
+                .anyRequest().permitAll();
+                // 인증이 필요한 url만 나중에 따로 등록을 하자. 일단은 전부 허용. 예를들어 마이페이지.
 
-                .anyRequest().authenticated()   // 나머지 API 는 전부 인증 필요
 
                 // JwtFilter 를 등록한다.
                 // UsernamePasswordAuthenticationFilter 앞에 등록하는 이유는 딱히 없지만
                 // SecurityContext를 사용하기 때문에 앞단의 필터에서 SecurityContext가 설정되고 난뒤 필터를 둔다.
-                .and()
-                .addFilterBefore(new JwtFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class);
+//                .and()
+//                .addFilterBefore(new JwtFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class);
 
     }
 
