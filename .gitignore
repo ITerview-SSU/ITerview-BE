@@ -40,3 +40,6 @@ out/
 
 ### info ###
 application.yml
+
+### resources ###
+/tmpFiles/

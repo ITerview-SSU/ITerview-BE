@@ -10,7 +10,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class AppConfig {
     /**
      *
-     * 2022-02-26
      *
      * @return PasswordEncoder - Spring5 부터 인코더 생성 방법이 변경되었다.
      *  다양한 암호화 알고리즘을 변경가능하도록 한것으로 보인다.
