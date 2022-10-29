@@ -1,7 +1,7 @@
 package ITerview.iterview.Repository;
 
-import ITerview.iterview.Domain.Authority;
-import ITerview.iterview.Domain.MemberAuth;
+import ITerview.iterview.Domain.auth.Authority;
+import ITerview.iterview.Domain.auth.MemberAuth;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

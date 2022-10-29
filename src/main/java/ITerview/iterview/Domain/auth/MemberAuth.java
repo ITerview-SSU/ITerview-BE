@@ -1,4 +1,4 @@
-package ITerview.iterview.Domain;
+package ITerview.iterview.Domain.auth;
 
 import lombok.RequiredArgsConstructor;
 

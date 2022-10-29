@@ -11,7 +11,7 @@ import java.io.IOException;
 
 @RequiredArgsConstructor
 @RestController
-public class S3uploadTestController {
+public class S3uploadController {
     private final S3Uploader s3Uploader;
 
     @PostMapping("/upload")

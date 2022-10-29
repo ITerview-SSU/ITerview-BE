@@ -2,9 +2,9 @@ package ITerview.iterview.Service;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import ITerview.iterview.Domain.Authority;
-import ITerview.iterview.Domain.Member;
-import ITerview.iterview.Domain.MemberAuth;
+import ITerview.iterview.Domain.auth.Authority;
+import ITerview.iterview.Domain.auth.Member;
+import ITerview.iterview.Domain.auth.MemberAuth;
 import ITerview.iterview.Dto.jwt.TokenDTO;
 import ITerview.iterview.Dto.login.LoginReqDTO;
 import ITerview.iterview.Dto.member.MemberReqDTO;
@@ -23,8 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 
 import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class AuthServiceTest {

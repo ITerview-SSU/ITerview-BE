@@ -1,8 +1,8 @@
 package ITerview.iterview.Service;
 
 import ITerview.iterview.ExceptionHandler.BizException;
-import ITerview.iterview.Domain.Authority;
-import ITerview.iterview.Domain.Member;
+import ITerview.iterview.Domain.auth.Authority;
+import ITerview.iterview.Domain.auth.Member;
 import ITerview.iterview.ExceptionHandler.MemberExceptionType;
 import ITerview.iterview.Repository.MemberRepository;
 import lombok.RequiredArgsConstructor;

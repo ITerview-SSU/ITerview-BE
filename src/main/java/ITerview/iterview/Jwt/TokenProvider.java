@@ -2,7 +2,7 @@ package ITerview.iterview.Jwt;
 
 import ITerview.iterview.ExceptionHandler.AuthorityExceptionType;
 import ITerview.iterview.ExceptionHandler.BizException;
-import ITerview.iterview.Domain.Authority;
+import ITerview.iterview.Domain.auth.Authority;
 import ITerview.iterview.Dto.jwt.TokenDTO;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -11,7 +11,6 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;

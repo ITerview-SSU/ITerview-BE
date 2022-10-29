@@ -1,8 +1,8 @@
 package ITerview.iterview.Service;
 
-import ITerview.iterview.Domain.Authority;
-import ITerview.iterview.Domain.Member;
-import ITerview.iterview.Domain.MemberAuth;
+import ITerview.iterview.Domain.auth.Authority;
+import ITerview.iterview.Domain.auth.Member;
+import ITerview.iterview.Domain.auth.MemberAuth;
 import ITerview.iterview.Domain.jwt.RefreshToken;
 import ITerview.iterview.Dto.jwt.TokenDTO;
 import ITerview.iterview.Dto.jwt.TokenReqDTO;
@@ -19,7 +19,6 @@ import ITerview.iterview.Repository.MemberRepository;
 import ITerview.iterview.Repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;

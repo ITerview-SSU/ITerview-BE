@@ -1,12 +1,15 @@
-package ITerview.iterview.Domain;
+package ITerview.iterview.Domain.auth;
 
+import ITerview.iterview.Domain.main.Video;
 import ITerview.iterview.Dto.member.MemberUpdateDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -41,6 +44,9 @@ public class Member {
             joinColumns = {@JoinColumn(name="member_id", referencedColumnName = "member_id")},
             inverseJoinColumns = {@JoinColumn(name="authority_name", referencedColumnName = "authority_name")})
     private Set<Authority> authorities = new HashSet<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<Video> videos = new ArrayList<>();
 
 
     @Builder

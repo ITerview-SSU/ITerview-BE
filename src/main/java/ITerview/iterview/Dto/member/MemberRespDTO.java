@@ -1,6 +1,6 @@
 package ITerview.iterview.Dto.member;
 
-import ITerview.iterview.Domain.Member;
+import ITerview.iterview.Domain.auth.Member;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
