@@ -20,8 +20,9 @@ public class Question {
     @NotNull
     private String question;
 
-    @OneToOne(mappedBy = "question")
-    private Video video;
+    @OneToMany
+    @JoinColumn(name="question_id")
+    private List<Video> videos = new ArrayList<>();
 
 
     @ManyToMany

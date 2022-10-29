@@ -29,9 +29,11 @@ public class Video extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     private List<Category> categories = new ArrayList<>();
 
-    @OneToOne
-    @JoinColumn(name="question_id")
-    private Question question;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @NotNull
+    private Question quesetion;
+
+
 
 
     @NotNull
