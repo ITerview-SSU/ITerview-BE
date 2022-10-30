@@ -55,10 +55,10 @@ public class MemberRepository{
 
     public boolean existsByEmail(String email){
         try {
-            Member member = em.
-                    createQuery("select m from Member m where m.email = :email", Member.class)
-                    .setParameter("email", email)
-                    .getSingleResult();
+            em
+                .createQuery("select m from Member m where m.email = :email", Member.class)
+                .setParameter("email", email)
+                .getSingleResult();
             return true;
         }catch(NoResultException e){
             return false;

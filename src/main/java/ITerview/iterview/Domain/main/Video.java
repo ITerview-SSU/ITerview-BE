@@ -36,8 +36,9 @@ public class Video extends BaseEntity {
     @NotNull
     private Question question;
     @Column(length=1000)
-    @NotNull
     private String url;
+
+    private String filename;
 
     @Column(columnDefinition = "LONGTEXT")
     @ColumnDefault("null")

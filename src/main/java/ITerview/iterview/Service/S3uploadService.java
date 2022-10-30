@@ -31,6 +31,13 @@ public class S3uploadService {
     private final QuestionRepository questionRepository;
     private final TokenProvider tokenProvider;
 
+    public Member findByAccessToken(String accessToken){
+        String userEmail = tokenProvider.getMemberEmailByToken(accessToken);
+        Member member = memberRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new BizException(MemberExceptionType.NOT_FOUND_USER));
+        return member;
+    }
+
     public VideoDto uploads(VideoUploadDto videoUploadDto) throws Exception{
         Long questionId = videoUploadDto.getQuestionId();
         String accessToken = videoUploadDto.getAccessToken();
@@ -38,9 +45,7 @@ public class S3uploadService {
 
 
         // 현재 로그인한 사용자 찾기
-        String userEmail = tokenProvider.getMemberEmailByToken(accessToken);
-        Member member = memberRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new BizException(MemberExceptionType.NOT_FOUND_USER));
+        Member member = findByAccessToken(accessToken);
         String username = member.getUsername();
 
         // questionId를 통해서 Question 객체를 찾고, Question객체의 categories를 불러와서, video의 categories에 저장
