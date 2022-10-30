@@ -1,10 +1,12 @@
 package ITerview.iterview.Controller;
 
+import ITerview.iterview.Dto.main.VideoDto;
+import ITerview.iterview.Dto.main.VideoUploadDto;
 import ITerview.iterview.Service.S3Uploader;
+import ITerview.iterview.Service.S3uploadService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -12,11 +14,12 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @RestController
 public class S3uploadController {
-    private final S3Uploader s3Uploader;
+
+    private final S3uploadService s3uploadService;
+
 
     @PostMapping("/upload")
-    public String uploadFile(@RequestParam("video") MultipartFile multipartFile) throws IOException{
-        String [] values = s3Uploader.upload(multipartFile, "1avn");
-        return values[0] + values[1];
+    public VideoDto uploadFile(@ModelAttribute VideoUploadDto videoUploadDto) throws Exception{
+        return s3uploadService.uploads(videoUploadDto);
     }
 }

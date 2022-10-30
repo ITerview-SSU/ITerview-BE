@@ -61,7 +61,7 @@ public class AuthService {
 
         Member member = memberRequestDto.toMember(passwordEncoder, set);
         log.debug("member = {}",member);
-        return MemberRespDTO.of(memberRepository.save(member));
+        return MemberRespDTO.of(memberRepository.saveMember(member));
     }
 
     @Transactional
@@ -75,7 +75,7 @@ public class AuthService {
         String refreshToken = tokenProvider.createRefreshToken(email, member.getAuthorities());
 
         //refresh Token 저장
-        refreshTokenRepository.save(
+        refreshTokenRepository.saveRefreshToken(
                 RefreshToken.builder()
                         .key(email)
                         .value(refreshToken)
@@ -143,7 +143,7 @@ public class AuthService {
         RefreshToken refreshToken = refreshTokenRepository.findByKey(email)
                 .orElseThrow(() -> new BizException(MemberExceptionType.LOGOUT_MEMBER));
 
-        refreshTokenRepository.delete(refreshToken);
+        refreshTokenRepository.deleteRefreshToken(refreshToken);
         return new ResponseEntity(HttpStatus.OK);
     }
 

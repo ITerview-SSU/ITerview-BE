@@ -2,8 +2,9 @@ package ITerview.iterview.Domain.main;
 
 import ITerview.iterview.Domain.BaseEntity;
 import ITerview.iterview.Domain.auth.Member;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -12,7 +13,9 @@ import java.util.List;
 
 @Entity
 @Getter
-
+@Setter
+@NoArgsConstructor
+@DynamicInsert
 public class Video extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,14 +34,27 @@ public class Video extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @NotNull
-    private Question quesetion;
-
-
-
-
+    private Question question;
+    @Column(length=1000)
     @NotNull
     private String url;
 
     @Column(columnDefinition = "LONGTEXT")
+    @ColumnDefault("null")
     private String caption;
+
+    public Video(Member member, Question question, String url) {
+        this.member = member;
+        this.question = question;
+        this.url = url;
+    }
+
+    public Video updateCategories(List<Category> categories){
+        this.categories = categories;
+        for (Category category : categories){
+            category.getVideos().add(this);
+        }
+
+        return this;
+    }
 }

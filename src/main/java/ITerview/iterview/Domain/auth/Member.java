@@ -3,6 +3,7 @@ package ITerview.iterview.Domain.auth;
 import ITerview.iterview.Domain.main.Video;
 import ITerview.iterview.Dto.member.MemberUpdateDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -40,14 +41,19 @@ public class Member {
 
     @ManyToMany
     @JoinTable(
-            name="member_authoritu",
+            name="member_authority",
             joinColumns = {@JoinColumn(name="member_id", referencedColumnName = "member_id")},
             inverseJoinColumns = {@JoinColumn(name="authority_name", referencedColumnName = "authority_name")})
     private Set<Authority> authorities = new HashSet<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Video> videos = new ArrayList<>();
 
+    @JsonProperty("videos")
+    public List<Long> getVideos(){
+        return videos.stream().map(Video::getId).collect(Collectors.toList());
+    }
 
     @Builder
     public Member(String username, String email, String password, boolean activated, Set<Authority> authorities) {
