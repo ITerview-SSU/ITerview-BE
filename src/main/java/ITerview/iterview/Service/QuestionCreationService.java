@@ -6,11 +6,15 @@ import ITerview.iterview.IterviewApplication;
 import ITerview.iterview.Repository.CategoryRepository;
 import ITerview.iterview.Repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -23,20 +27,24 @@ public class QuestionCreationService {
     private final QuestionRepository questionRepository;
     private final CategoryRepository categoryRepository;
     private final String DELIMITER = "::";
+    private final String QUESTIONS_FILE = "questions.txt";
 
     public void createQuestions(){
+        // 질문 파일 가져오기
+        ClassPathResource resource = new ClassPathResource(QUESTIONS_FILE);
         List<List<String>> records = new ArrayList<>();
-        String path = System.getProperty("user.dir") + "/src/main/resources/questions.txt";
-        try (Scanner scanner = new Scanner(new File(path))) {
-            while (scanner.hasNextLine()) {
-                List<String> questionParams = getRecordFromLine(scanner.nextLine());
-                System.out.println(questionParams);
+
+        try{
+            Path path = Paths.get(resource.getURI());
+            List<String> contents = Files.readAllLines(path);
+            for(String content : contents){
+                List<String> questionParams = getRecordFromLine(content);
                 records.add(questionParams);
             }
-        } catch (FileNotFoundException e) {
+        }
+        catch (Exception e) {
             System.out.println("파일 없는데?");
         }
-        System.out.println("records :" + records);
 
         for (List<String> questionParam : records){
             String question_name = questionParam.get(0);
