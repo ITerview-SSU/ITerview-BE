@@ -19,7 +19,7 @@ public class CategoryCreationService{
     private final CategoryRepository categoryRepository;
 
     public void createCategories(){
-        List<String> categoryNames = new ArrayList<>(Arrays.asList("COMMON", "FE", "BE", "IOS", "ANDROID", "UI/UX", "PM"));
+        List<String> categoryNames = new ArrayList<>(Arrays.asList("COMMON", "FE", "BE", "IOS", "ANDROID", "UIUX", "PM"));
         for(String categoryName : categoryNames){
             Category category = new Category();
             category.setCategory_name(categoryName);
