@@ -2,7 +2,6 @@ package ITerview.iterview.Service;
 
 import ITerview.iterview.Domain.main.Category;
 import ITerview.iterview.Domain.main.Question;
-import ITerview.iterview.IterviewApplication;
 import ITerview.iterview.Repository.CategoryRepository;
 import ITerview.iterview.Repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -30,15 +28,11 @@ public class QuestionCreationService {
     private final String QUESTIONS_FILE = "questions.txt";
 
     public void createQuestions(){
-        // 질문 파일 가져오기
-        ClassPathResource resource = new ClassPathResource(QUESTIONS_FILE);
         List<List<String>> records = new ArrayList<>();
-
-        try{
-            Path path = Paths.get(resource.getURI());
-            List<String> contents = Files.readAllLines(path);
-            for(String content : contents){
-                List<String> questionParams = getRecordFromLine(content);
+        String path = System.getProperty("user.dir") + "/questions.txt";
+        try (Scanner scanner = new Scanner(new File(path))) {
+            while (scanner.hasNextLine()) {
+                List<String> questionParams = getRecordFromLine(scanner.nextLine());
                 records.add(questionParams);
             }
         }
