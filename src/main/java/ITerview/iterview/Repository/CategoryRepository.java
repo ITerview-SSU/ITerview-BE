@@ -16,6 +16,9 @@ import javax.persistence.EntityManager;
 public class CategoryRepository{
     private final EntityManager em;
 
+    public void saveCategory(Category category){
+        em.persist(category);
+    }
     public Category findByCategory_name(String name){
         return em.
                 createQuery("select c from Category c where c.category_name = :name", Category.class)

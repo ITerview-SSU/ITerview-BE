@@ -19,6 +19,9 @@ import java.util.Optional;
 public class AuthorityRepository{
     private final EntityManager em;
 
+//    public void saveAuthority(Authority authority){
+//        em.persist(authority);
+//    }
     public Optional<Authority> findByAuthorityName(MemberAuth authorityName){
         Authority authority = em.
                 createQuery("select a from Authority a where a.authorityName = :authorityName", Authority.class)

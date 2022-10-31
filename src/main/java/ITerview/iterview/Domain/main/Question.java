@@ -2,6 +2,7 @@ package ITerview.iterview.Domain.main;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -10,6 +11,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@Setter
 public class Question {
 
     @Id
@@ -29,5 +31,5 @@ public class Question {
     @JoinTable(name = "Question_Category",
             joinColumns = @JoinColumn(name = "question_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
-    private List<Category> categories = new ArrayList<>();;
+    private List<Category> categories = new ArrayList<>();
 }

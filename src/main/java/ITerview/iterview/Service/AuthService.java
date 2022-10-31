@@ -27,8 +27,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import ITerview.iterview.Dto.member.MemberRespDTO;
 
@@ -72,17 +71,21 @@ public class AuthService {
         Member member = customUserDetailsService.getMember(email);
 
         String accessToken = tokenProvider.createAccessToken(email, member.getAuthorities());
-        String refreshToken = tokenProvider.createRefreshToken(email, member.getAuthorities());
+        // 만약 해당 유저의 refreshToken이 이미 있다면 삭제하고 재생성
+        if (refreshTokenRepository.existsByKey(email)){
+            refreshTokenRepository.deleteRefreshToken(refreshTokenRepository.findByKey(email).orElseThrow(()->new BizException(MemberExceptionType.NOT_FOUND_USER)));
+        }
+        String newRefreshToken = tokenProvider.createRefreshToken(email, member.getAuthorities());
 
         //refresh Token 저장
         refreshTokenRepository.saveRefreshToken(
                 RefreshToken.builder()
                         .key(email)
-                        .value(refreshToken)
+                        .value(newRefreshToken)
                         .build()
         );
 
-        return tokenProvider.createTokenDTO(accessToken,refreshToken);
+        return tokenProvider.createTokenDTO(accessToken, newRefreshToken);
 
     }
 
