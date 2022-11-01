@@ -48,4 +48,14 @@ public class VideoRepository{
             em.remove(video);
         }
     }
+
+    public String getCreatedAt(Long questionId, String username){
+        Video video  = em
+                .createQuery("select v from Video v where v.question.id = :questionId and v.member.username = :username", Video.class)
+                .setParameter("questionId", questionId)
+                .setParameter("username", username)
+                .getSingleResult();
+
+        return String.valueOf(video.getCreatedAt());
+    }
 }
