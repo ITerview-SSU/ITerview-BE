@@ -33,10 +33,25 @@ public class QuestionRepository{
         }
     }
 
+    public List<Question> findByKeyword(String keyword){
+        try {
+            List questions = em
+                    .createQuery("select q from Question q where q.question like :param")
+                    .setParameter("param", "%" + keyword + "%")
+                    .getResultList();
+
+            return questions;
+        } catch (Exception e) {
+            return new ArrayList<>();
+        }
+    }
+
     public Optional<Question> findById(Long questionId){
         Question question = em.find(Question.class, questionId);
         return Optional.of(question);
     }
+
+
 }
 
 
