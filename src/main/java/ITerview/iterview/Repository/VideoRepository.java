@@ -49,6 +49,16 @@ public class VideoRepository{
         }
     }
 
+    public String getFilename(Long questionId, String username){
+        Video video;
+        if (existsByMemberAndQuestion(questionId, username)) {
+            video = findOne(questionId, username);
+            return video.getFilename();
+        }else{
+            return "";
+        }
+    }
+
     public String getCreatedAt(Long questionId, String username){
         Video video  = em
                 .createQuery("select v from Video v where v.question.id = :questionId and v.member.username = :username", Video.class)
@@ -58,4 +68,6 @@ public class VideoRepository{
 
         return String.valueOf(video.getCreatedAt());
     }
+
+
 }

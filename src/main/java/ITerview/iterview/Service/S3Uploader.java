@@ -75,7 +75,7 @@ public class S3Uploader {
         return Optional.empty();
     }
 
-    public void deleteFile(String fileName) {
-        amazonS3.deleteObject(new DeleteObjectRequest(bucket, fileName));
+    public void deleteFile(String fileName, String username) {
+        amazonS3.deleteObject(new DeleteObjectRequest(bucket, username + "/" + fileName));
     }
 }
