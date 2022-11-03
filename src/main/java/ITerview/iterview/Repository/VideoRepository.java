@@ -3,13 +3,11 @@ package ITerview.iterview.Repository;
 import ITerview.iterview.Domain.auth.Member;
 import ITerview.iterview.Domain.main.Video;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -69,5 +67,15 @@ public class VideoRepository{
         return String.valueOf(video.getCreatedAt());
     }
 
+    public List<Video> findByMember(Member member){
+        try{
+            return em
+                    .createQuery("select v from Video v where v.member = :member")
+                    .setParameter("member", member)
+                    .getResultList();
+        }catch (Exception e){
+            return new ArrayList<>();
+        }
+    }
 
 }
