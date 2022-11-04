@@ -16,7 +16,6 @@ import com.amazonaws.HttpMethod;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +24,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @Transactional
@@ -36,6 +34,7 @@ public class S3PreSignedUrlService {
     private final VideoRepository videoRepository;
     private final TokenProvider tokenProvider;
     private final AmazonS3Client amazonS3Client;
+    private final TranscriptionService transcriptionService;
 
 
     @Value("${cloud.aws.S3.bucket}")
@@ -80,6 +79,7 @@ public class S3PreSignedUrlService {
         video.updateCategories(categories);
         videoRepository.saveVideo(video);
     }
+
 
     public String getPreSignedURLForPut(S3PreSignedUrlRequestDto s3PreSignedUrlRequestDto) {
         Member member = findByAccessToken(s3PreSignedUrlRequestDto.getAccessToken());

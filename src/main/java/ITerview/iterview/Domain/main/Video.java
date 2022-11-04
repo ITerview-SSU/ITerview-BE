@@ -42,7 +42,7 @@ public class Video extends BaseEntity {
 
     @Column(columnDefinition = "LONGTEXT")
     @ColumnDefault("null")
-    private String caption;
+    private String transcription;
 
     public Video(Member member, Question question, String url) {
         this.member = member;

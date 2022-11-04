@@ -25,6 +25,13 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+	implementation 'com.amazonaws:aws-java-sdk-transcribe:1.12.334'
+	implementation 'software.amazon.awssdk:kinesis'
+	implementation platform('software.amazon.awssdk:bom:2.15.0')
+	implementation group: 'com.amazonaws', name: 'aws-java-sdk-bom', version: '1.12.334', ext: 'pom'
+	implementation 'com.squareup.okhttp3:okhttp:4.10.0'
+
+
 	implementation 'junit:junit:4.13.1'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'

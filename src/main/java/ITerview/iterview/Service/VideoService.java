@@ -1,7 +1,7 @@
 package ITerview.iterview.Service;
 
+import ITerview.iterview.Config.S3Uploader;
 import ITerview.iterview.Domain.auth.Member;
-import ITerview.iterview.Domain.main.Video;
 import ITerview.iterview.Dto.main.VideoCreatedAtRequestDto;
 import ITerview.iterview.Dto.main.VideoCreatedAtResponseDto;
 import ITerview.iterview.Dto.main.VideoDeleteRequestDto;
@@ -10,9 +10,7 @@ import ITerview.iterview.ExceptionHandler.MemberExceptionType;
 import ITerview.iterview.Jwt.TokenProvider;
 import ITerview.iterview.Repository.MemberRepository;
 import ITerview.iterview.Repository.VideoRepository;
-import antlr.Token;
 import lombok.RequiredArgsConstructor;
-import org.apache.http.protocol.HTTP;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

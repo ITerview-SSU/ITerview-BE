@@ -5,14 +5,9 @@ import ITerview.iterview.Dto.main.S3PreSignedUrlResponseDto;
 import ITerview.iterview.Dto.main.VideoDto;
 import ITerview.iterview.Dto.main.VideoUploadDto;
 import ITerview.iterview.Service.S3PreSignedUrlService;
-import ITerview.iterview.Service.S3Uploader;
 import ITerview.iterview.Service.S3uploadService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
 
 @RequiredArgsConstructor
 @RestController

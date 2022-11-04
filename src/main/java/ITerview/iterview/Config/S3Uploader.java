@@ -1,4 +1,4 @@
-package ITerview.iterview.Service;
+package ITerview.iterview.Config;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;

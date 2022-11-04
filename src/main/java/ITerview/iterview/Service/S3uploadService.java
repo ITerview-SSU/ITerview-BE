@@ -1,5 +1,6 @@
 package ITerview.iterview.Service;
 
+import ITerview.iterview.Config.S3Uploader;
 import ITerview.iterview.Domain.auth.Member;
 import ITerview.iterview.Domain.main.Category;
 import ITerview.iterview.Domain.main.Question;
@@ -68,7 +69,7 @@ public class S3uploadService {
         VideoDto videoDto =  VideoDto.builder()
                 .video_id(video.getId())
                 .createdAt(String.valueOf(video.getCreatedAt()))
-                .caption(video.getCaption())
+                .transcription(video.getTranscription())
                 .url(video.getUrl())
                 .memberId(video.getMember().getId())
                 .questionId(video.getQuestion().getId())
