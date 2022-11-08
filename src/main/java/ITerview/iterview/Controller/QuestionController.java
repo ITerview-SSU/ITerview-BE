@@ -3,18 +3,22 @@ package ITerview.iterview.Controller;
 import ITerview.iterview.Dto.main.QuestionByCategoryDto;
 import ITerview.iterview.Service.QuestionService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/api")
 public class QuestionController {
     private final QuestionService questionService;
 
-    @GetMapping("/api/questions")
+    @GetMapping("/questions")
     public QuestionByCategoryDto getQuestions(@RequestParam(name = "category") String category){
         return questionService.getQuestions(category);
+    }
+
+    @GetMapping("/questions/random")
+    public QuestionByCategoryDto getRandomQuestions(@RequestParam(name = "category") String category){
+        return questionService.getRandomQuestions(category);
     }
 
 }

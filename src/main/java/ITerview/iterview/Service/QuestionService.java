@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -28,5 +29,21 @@ public class QuestionService {
             questionByCategoryDto.getQuestions().add(questionDto);
         }
         return questionByCategoryDto;
+    }
+
+    public QuestionByCategoryDto getRandomQuestions(String category) {
+        List<Question> questionList = questionRepository.findByCategory(category);
+        Collections.shuffle(questionList);
+
+        QuestionByCategoryDto questionByCategoryDto = new QuestionByCategoryDto();
+        for (Question question : questionList){
+            QuestionDto questionDto = QuestionDto.builder()
+                    .questionId(question.getId())
+                    .questionString(question.getQuestion())
+                    .build();
+            questionByCategoryDto.getQuestions().add(questionDto);
+        }
+        return questionByCategoryDto;
+
     }
 }
