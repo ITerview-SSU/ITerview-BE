@@ -1,7 +1,9 @@
 package ITerview.iterview.Config;
 
-import ITerview.iterview.Jwt.*;
-
+import ITerview.iterview.Jwt.CustomEmailPasswordAuthProvider;
+import ITerview.iterview.Jwt.JwtAccessDeniedHandler;
+import ITerview.iterview.Jwt.JwtAuthenticationEntryPoint;
+import ITerview.iterview.Jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -14,7 +16,6 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -99,7 +100,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { // WebSecurit
     public CorsConfigurationSource corsConfigurationSource(@Value("${cors.allowURL}") String allowURL) {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.addAllowedOrigin(allowURL);
+        configuration.addAllowedOrigin("*");
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
         configuration.setAllowCredentials(true);
