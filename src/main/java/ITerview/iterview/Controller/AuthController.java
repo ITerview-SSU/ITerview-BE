@@ -24,24 +24,23 @@ public class AuthController {
         log.debug("memberRequestDto = {}",memberRequestDto);
         return authService.signup(memberRequestDto);
     }
-
     @PostMapping("/login")
     public TokenDTO login(@RequestBody LoginReqDTO loginReqDTO) {
         return authService.login(loginReqDTO);
     }
 
     @PostMapping("/reissue")
-    public TokenDTO reissue(@RequestBody TokenReqDTO tokenRequestDto) {
-        return authService.reissue(tokenRequestDto);
+    public TokenDTO reissue(@RequestHeader("Authorization") String accessToken, @RequestHeader("refresh-token") String refreshToken) {
+        return authService.reissue(new TokenReqDTO(accessToken.substring(7), refreshToken));
     }
 
     @PostMapping("/logout")
-    public ResponseEntity logout(@RequestBody TokenDTO tokenRequestDto){
-        return authService.logout(tokenRequestDto.getAccessToken());
+    public ResponseEntity logout(@RequestHeader("Authorization") String accessToken){
+        return authService.logout(accessToken.substring(7));
     }
 
     @PostMapping("/info")
-    public MemberRespDTO info(@RequestBody TokenDTO tokenRequestDto){
-        return authService.getInfo(tokenRequestDto.getAccessToken());
+    public MemberRespDTO info(@RequestHeader("Authorization") String accessToken){
+        return authService.getInfo(accessToken.substring(7));
     }
 }
