@@ -39,7 +39,7 @@ public class Member {
     @Column(name="activated")
     private boolean activated;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name="member_authority",
             joinColumns = {@JoinColumn(name="member_id", referencedColumnName = "member_id")},
