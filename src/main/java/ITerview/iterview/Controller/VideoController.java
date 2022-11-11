@@ -5,12 +5,8 @@ import ITerview.iterview.Dto.main.VideoCreatedAtResponseDto;
 import ITerview.iterview.Dto.main.VideoDeleteRequestDto;
 import ITerview.iterview.Service.VideoService;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,12 +15,14 @@ public class VideoController {
     private final VideoService videoService;
 
     @PostMapping("/createdat")
-    public VideoCreatedAtResponseDto getVideoCreatedAt(@RequestBody VideoCreatedAtRequestDto videoCreatedAtRequestDto) {
+    public VideoCreatedAtResponseDto getVideoCreatedAt(@RequestBody VideoCreatedAtRequestDto videoCreatedAtRequestDto, @RequestHeader("Authorization") String accessToken) {
+        videoCreatedAtRequestDto.setAccessToken(accessToken.substring(7));
         return videoService.getVideoCreatedAt(videoCreatedAtRequestDto);
     }
 
     @PostMapping("/delete")
-    public ResponseEntity deleteVideo(@RequestBody VideoDeleteRequestDto videoDeleteRequestDto) {
+    public ResponseEntity deleteVideo(@RequestBody VideoDeleteRequestDto videoDeleteRequestDto, @RequestHeader("Authorization") String accessToken) {
+        videoDeleteRequestDto.setAccessToken(accessToken.substring(7));
         return videoService.deleteVideo(videoDeleteRequestDto);
     }
 }

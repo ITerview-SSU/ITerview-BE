@@ -4,10 +4,7 @@ import ITerview.iterview.Dto.main.MyPageMyQuestionsRequestDto;
 import ITerview.iterview.Dto.main.MyPageMyQuestionsResponseDto;
 import ITerview.iterview.Service.MyPageService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -15,8 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class MyPageController {
     private final MyPageService myPageService;
 
-    @PostMapping("myquestions")
-    public MyPageMyQuestionsResponseDto getMyQuestions(@RequestBody MyPageMyQuestionsRequestDto myPageMyQuestionsRequestDto) {
-        return myPageService.getMyQuestions(myPageMyQuestionsRequestDto);
+    @GetMapping("myquestions")
+    public MyPageMyQuestionsResponseDto getMyQuestions(@RequestHeader("Authorization") String accessToken) {
+        return myPageService.getMyQuestions(new MyPageMyQuestionsRequestDto(accessToken.substring(7)));
     }
 }
