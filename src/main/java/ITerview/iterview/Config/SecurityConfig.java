@@ -20,6 +20,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.List;
+
 
 @Configuration
 @EnableWebSecurity // 기본적인 웹보안을 사용하겠다는 것
@@ -101,6 +103,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { // WebSecurit
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.addAllowedOrigin("*");
+        configuration.setAllowedOrigins(List.of(allowURL, "http://127.0.0.1:5500"));
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
         configuration.setAllowCredentials(true);
