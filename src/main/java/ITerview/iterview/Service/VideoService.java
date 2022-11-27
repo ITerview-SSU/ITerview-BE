@@ -44,6 +44,7 @@ public class VideoService {
         String createdAt;
         if (videoRepository.existsByMemberAndQuestion(questionId, member.getUsername())) {
              createdAt = videoRepository.getCreatedAt(questionId, member.getUsername());
+             createdAt = refineCreatedAt(createdAt);
         }else{
             createdAt = "";
         }
@@ -51,6 +52,28 @@ public class VideoService {
         VideoCreatedAtResponseDto videoCreatedAtResponseDto = new VideoCreatedAtResponseDto();
         videoCreatedAtResponseDto.setCreatedAt(createdAt);
         return videoCreatedAtResponseDto;
+    }
+
+    public String refineCreatedAt(String createdAt){
+        //"2022-11-28T01:28:50.331511"
+        String[] splitCreatedAt =  createdAt.split("T");
+        String date = splitCreatedAt[0];
+        date = date.replace("-", ". ");
+
+        String time = splitCreatedAt[1];
+        String hour = time.substring(0, 2);
+        String minute = time.substring(3, 5);
+        Integer hourInt = Integer.parseInt(hour);
+        String ampm;
+        if(hourInt > 12){
+            ampm = "PM";
+            hourInt -= 12;
+        }else{
+            ampm = "AM";
+        }
+        hour = (hourInt >= 10) ? "" + hour : "0" + hourInt;
+
+        return date + ". " + ampm + " " + hour + ":" + minute;
     }
 
     public ResponseEntity deleteVideo(VideoDeleteRequestDto videoDeleteRequestDto) {

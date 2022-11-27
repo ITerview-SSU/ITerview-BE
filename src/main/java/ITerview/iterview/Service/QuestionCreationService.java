@@ -5,14 +5,10 @@ import ITerview.iterview.Domain.main.Question;
 import ITerview.iterview.Repository.CategoryRepository;
 import ITerview.iterview.Repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -29,7 +25,7 @@ public class QuestionCreationService {
 
     public void createQuestions(){
         List<List<String>> records = new ArrayList<>();
-        String path = System.getProperty("user.dir") + "/questions.txt";
+        String path = System.getProperty("user.dir") + "/" + QUESTIONS_FILE;
         try (Scanner scanner = new Scanner(new File(path))) {
             while (scanner.hasNextLine()) {
                 List<String> questionParams = getRecordFromLine(scanner.nextLine());
@@ -37,7 +33,7 @@ public class QuestionCreationService {
             }
         }
         catch (Exception e) {
-            System.out.println("파일 없는데?");
+            System.out.println("Question file does not exist.");
         }
 
         for (List<String> questionParam : records){

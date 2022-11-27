@@ -102,8 +102,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { // WebSecurit
     public CorsConfigurationSource corsConfigurationSource(@Value("${cors.allowURL}") String allowURL) {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.addAllowedOrigin("*");
-        configuration.setAllowedOrigins(List.of(allowURL, "http://127.0.0.1:5500"));
+        configuration.setAllowedOrigins(List.of(allowURL));
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
         configuration.setAllowCredentials(true);
