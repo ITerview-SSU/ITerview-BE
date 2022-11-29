@@ -8,5 +8,4 @@ import java.util.List;
 @Data
 public class QuestionByCategoryDto {
     private List<QuestionDto> questions = new ArrayList<>();
-
 }

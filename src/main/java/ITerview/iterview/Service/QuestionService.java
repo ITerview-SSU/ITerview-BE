@@ -1,6 +1,7 @@
 package ITerview.iterview.Service;
 
 import ITerview.iterview.Domain.main.Question;
+import ITerview.iterview.Dto.main.QuestionCountByCategoryDto;
 import ITerview.iterview.Dto.main.QuestionDto;
 import ITerview.iterview.Dto.main.QuestionByCategoryDto;
 import ITerview.iterview.Repository.QuestionRepository;
@@ -45,5 +46,17 @@ public class QuestionService {
         }
         return questionByCategoryDto;
 
+    }
+
+    public QuestionCountByCategoryDto getQuestionCountByCategory(String category) {
+        List<Question> questionList = questionRepository.findByCategory(category);
+        Integer questionCount = questionList.size();
+
+        QuestionCountByCategoryDto questionCountByCategoryDto = QuestionCountByCategoryDto.builder()
+                .categoryName(category)
+                .questionCount(questionCount)
+                .build();
+
+        return questionCountByCategoryDto;
     }
 }

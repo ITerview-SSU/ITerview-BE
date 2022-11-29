@@ -1,10 +1,8 @@
 package ITerview.iterview.Repository;
 
-import ITerview.iterview.Domain.main.Category;
 import ITerview.iterview.Domain.main.Question;
 import ITerview.iterview.Domain.main.Video;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -68,6 +66,8 @@ public class QuestionRepository{
         }
         return questions;
     }
+
+
 }
 
 

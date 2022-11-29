@@ -1,6 +1,7 @@
 package ITerview.iterview.Controller;
 
 import ITerview.iterview.Dto.main.QuestionByCategoryDto;
+import ITerview.iterview.Dto.main.QuestionCountByCategoryDto;
 import ITerview.iterview.Service.QuestionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,11 @@ public class QuestionController {
     @GetMapping("/questions/random")
     public QuestionByCategoryDto getRandomQuestions(@RequestParam(name = "category") String category){
         return questionService.getRandomQuestions(category);
+    }
+
+    @GetMapping("/questions/count")
+    public QuestionCountByCategoryDto getQuestionCountByCategory(@RequestParam(name = "category") String category){
+        return questionService.getQuestionCountByCategory(category);
     }
 
 }

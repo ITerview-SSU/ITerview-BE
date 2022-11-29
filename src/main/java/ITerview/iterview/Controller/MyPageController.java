@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 public class MyPageController {
     private final MyPageService myPageService;
 
-    @GetMapping("myquestions")
+    @GetMapping("/myquestions/all")
     public MyPageMyQuestionsResponseDto getMyQuestions(@RequestHeader("Authorization") String accessToken) {
         return myPageService.getMyQuestions(new MyPageMyQuestionsRequestDto(accessToken.substring(7)));
     }
