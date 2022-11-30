@@ -17,15 +17,13 @@ public class TranscribeController {
     private final TranscriptionService transcriptionService;
 
     @PostMapping("/transcription/create")
-    public ResponseEntity createTranscription(@RequestBody TranscriptionCreateAPIRequestDTO transcriptionCreateAPIRequestDTO, @RequestHeader("Authorization") String accessToken){
-        transcriptionCreateAPIRequestDTO.setAccessToken(accessToken.substring(7));
-        return transcriptionService.createTranscription(transcriptionCreateAPIRequestDTO);
+    public ResponseEntity createTranscription(@RequestBody TranscriptionCreateAPIRequestDTO transcriptionCreateAPIRequestDTO, @RequestHeader("Authorization") String bearerToken){
+        return transcriptionService.createTranscription(transcriptionCreateAPIRequestDTO, bearerToken);
     }
 
     @PostMapping("/transcription")
-    public TranscriptionAPIResponseDTO getTranscription(@RequestBody TranscriptionAPIRequestDTO transcriptionAPIRequestDTO, @RequestHeader("Authorization") String accessToken){
-        transcriptionAPIRequestDTO.setAccessToken(accessToken.substring(7));
-        return transcriptionService.getVideoTranscription(transcriptionAPIRequestDTO);
+    public TranscriptionAPIResponseDTO getTranscription(@RequestBody TranscriptionAPIRequestDTO transcriptionAPIRequestDTO, @RequestHeader("Authorization") String bearerToken){
+        return transcriptionService.getVideoTranscription(transcriptionAPIRequestDTO, bearerToken);
     }
 
 }

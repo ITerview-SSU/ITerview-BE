@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -35,6 +36,16 @@ public class S3PreSignedUrlService {
     private final TokenProvider tokenProvider;
     private final AmazonS3Client amazonS3Client;
     private final TranscriptionService transcriptionService;
+
+    public static final String BEARER_PREFIX = "Bearer ";
+
+    private String resolveToken(String bearerToken) {
+        // bearer : 123123123123123 -> return 123123123123123123
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
+            return bearerToken.substring(7);
+        }
+        return null;
+    }
 
 
     @Value("${cloud.aws.S3.bucket}")
@@ -81,8 +92,9 @@ public class S3PreSignedUrlService {
     }
 
 
-    public String getPreSignedURLForPut(S3PreSignedUrlRequestDto s3PreSignedUrlRequestDto) {
-        Member member = findByAccessToken(s3PreSignedUrlRequestDto.getAccessToken());
+    public String getPreSignedURLForPut(S3PreSignedUrlRequestDto s3PreSignedUrlRequestDto, String bearerToken) {
+        String accessToken = resolveToken(bearerToken);
+        Member member = findByAccessToken(accessToken);
         String filename = s3PreSignedUrlRequestDto.getFilename();
 
         String preSignedURL = "";
@@ -111,8 +123,9 @@ public class S3PreSignedUrlService {
         return preSignedURL;
     }
 
-    public String getPreSignedURLForGet(S3PreSignedUrlRequestDto s3PreSignedUrlRequestDto) {
-        Member member = findByAccessToken(s3PreSignedUrlRequestDto.getAccessToken());
+    public String getPreSignedURLForGet(S3PreSignedUrlRequestDto s3PreSignedUrlRequestDto, String bearerToken) {
+        String accessToken = resolveToken(bearerToken);
+        Member member = findByAccessToken(accessToken);
         String username = member.getUsername();
         Long questionId = s3PreSignedUrlRequestDto.getQuestionId();
 

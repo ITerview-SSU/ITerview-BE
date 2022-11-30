@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 @Service
 @Transactional
@@ -24,6 +25,16 @@ public class VideoService {
     private final TokenProvider tokenProvider;
     private final MemberRepository memberRepository;
     private final S3Uploader s3Uploader;
+
+    public static final String BEARER_PREFIX = "Bearer ";
+
+    private String resolveToken(String bearerToken) {
+        // bearer : 123123123123123 -> return 123123123123123123
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
+            return bearerToken.substring(7);
+        }
+        return null;
+    }
 
     public Member findByAccessToken(String accessToken){
         String userEmail = tokenProvider.getMemberEmailByToken(accessToken);
@@ -36,8 +47,8 @@ public class VideoService {
         s3Uploader.deleteFile(filename, username);
     }
 
-    public VideoCreatedAtResponseDto getVideoCreatedAt(VideoCreatedAtRequestDto videoCreatedAtRequestDto) {
-        String accessToken = videoCreatedAtRequestDto.getAccessToken();
+    public VideoCreatedAtResponseDto getVideoCreatedAt(VideoCreatedAtRequestDto videoCreatedAtRequestDto, String bearerToken) {
+        String accessToken = resolveToken(bearerToken);
         Long questionId = videoCreatedAtRequestDto.getQuestionId();
 
         Member member = findByAccessToken(accessToken);
@@ -76,8 +87,8 @@ public class VideoService {
         return date + ". " + ampm + " " + hour + ":" + minute;
     }
 
-    public ResponseEntity deleteVideo(VideoDeleteRequestDto videoDeleteRequestDto) {
-        String accessToken = videoDeleteRequestDto.getAccessToken();
+    public ResponseEntity deleteVideo(VideoDeleteRequestDto videoDeleteRequestDto, String bearerToken) {
+        String accessToken = resolveToken(bearerToken);
         Long questionId = videoDeleteRequestDto.getQuestionId();
         Member member = findByAccessToken(accessToken);
         String username = member.getUsername();

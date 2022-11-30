@@ -8,6 +8,7 @@ import ITerview.iterview.Dto.jwt.TokenDTO;
 import ITerview.iterview.Dto.jwt.TokenReqDTO;
 import ITerview.iterview.Dto.login.LoginReqDTO;
 import ITerview.iterview.Dto.member.MemberReqDTO;
+import ITerview.iterview.Dto.member.MemberRespDTO;
 import ITerview.iterview.ExceptionHandler.AuthorityExceptionType;
 import ITerview.iterview.ExceptionHandler.BizException;
 import ITerview.iterview.ExceptionHandler.JwtExceptionType;
@@ -26,10 +27,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
-import java.util.*;
-
-import ITerview.iterview.Dto.member.MemberRespDTO;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Slf4j
@@ -43,6 +44,16 @@ public class AuthService {
     private final TokenProvider tokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
     private final CustomUserDetailsService customUserDetailsService;
+
+    public static final String BEARER_PREFIX = "Bearer ";
+
+    private String resolveToken(String bearerToken) {
+        // bearer : 123123123123123 -> return 123123123123123123
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
+            return bearerToken.substring(7);
+        }
+        return null;
+    }
 
     @Transactional
     public MemberRespDTO signup(MemberReqDTO memberRequestDto) {
@@ -141,7 +152,8 @@ public class AuthService {
         return tokenDto;
     }
 
-    public ResponseEntity logout(String accessToken){
+    public ResponseEntity logout(String bearerToken){
+        String accessToken = resolveToken(bearerToken);
         String email = tokenProvider.getMemberEmailByToken(accessToken);
         RefreshToken refreshToken = refreshTokenRepository.findByKey(email)
                 .orElseThrow(() -> new BizException(MemberExceptionType.LOGOUT_MEMBER));
@@ -150,7 +162,8 @@ public class AuthService {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    public MemberRespDTO getInfo(String accessToken){
+    public MemberRespDTO getInfo(String bearerToken){
+        String accessToken = resolveToken(bearerToken);
         String email = tokenProvider.getMemberEmailByToken(accessToken);
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new BizException(MemberExceptionType.NOT_FOUND_USER));

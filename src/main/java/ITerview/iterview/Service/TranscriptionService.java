@@ -24,6 +24,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.util.List;
@@ -50,6 +51,16 @@ public class TranscriptionService {
     private final TokenProvider tokenProvider;
     private final MemberRepository memberRepository;
     private final VideoRepository videoRepository;
+
+    public static final String BEARER_PREFIX = "Bearer ";
+
+    private String resolveToken(String bearerToken) {
+        // bearer : 123123123123123 -> return 123123123123123123
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
+            return bearerToken.substring(7);
+        }
+        return null;
+    }
 
     public Member findByAccessToken(String accessToken){
         String userEmail = tokenProvider.getMemberEmailByToken(accessToken);
@@ -176,8 +187,8 @@ public class TranscriptionService {
     }
 
 
-    public TranscriptionAPIResponseDTO getVideoTranscription(TranscriptionAPIRequestDTO transcriptionAPIRequestDTO) {
-        String accessToken = transcriptionAPIRequestDTO.getAccessToken();
+    public TranscriptionAPIResponseDTO getVideoTranscription(TranscriptionAPIRequestDTO transcriptionAPIRequestDTO, String bearerToken) {
+        String accessToken = resolveToken(bearerToken);
         Long questionId = transcriptionAPIRequestDTO.getQuestionId();
 
         Member member = findByAccessToken(accessToken);
@@ -200,8 +211,8 @@ public class TranscriptionService {
         return transcription;
     }
 
-    public ResponseEntity createTranscription(TranscriptionCreateAPIRequestDTO transcriptionCreateAPIRequestDTO) {
-        String accessToken = transcriptionCreateAPIRequestDTO.getAccessToken();
+    public ResponseEntity createTranscription(TranscriptionCreateAPIRequestDTO transcriptionCreateAPIRequestDTO, String bearerToken) {
+        String accessToken = resolveToken(bearerToken);
         Long questionId = transcriptionCreateAPIRequestDTO.getQuestionId();
 
         Member member = findByAccessToken(accessToken);

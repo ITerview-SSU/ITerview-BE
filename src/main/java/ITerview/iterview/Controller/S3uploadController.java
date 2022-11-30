@@ -18,22 +18,19 @@ public class S3uploadController {
 
 
     @PostMapping("/upload")
-    public VideoDto uploadFile(@ModelAttribute VideoUploadDto videoUploadDto, @RequestHeader("Authorization") String accessToken) throws Exception{
-        videoUploadDto.setAccessToken(accessToken.substring(7));
-        return s3uploadService.uploads(videoUploadDto);
+    public VideoDto uploadFile(@ModelAttribute VideoUploadDto videoUploadDto, @RequestHeader("Authorization") String bearerToken) throws Exception{
+        return s3uploadService.uploads(videoUploadDto, bearerToken);
     }
 
     @PostMapping("/uploadurl")
-    public S3PreSignedUrlResponseDto getPreSignedUrlForPut(@RequestBody S3PreSignedUrlRequestDto s3PreSignedUrlRequestDto,  @RequestHeader("Authorization") String accessToken){
-        s3PreSignedUrlRequestDto.setAccessToken(accessToken.substring(7));
-        String preSignedUrl = s3PreSignedUrlService.getPreSignedURLForPut(s3PreSignedUrlRequestDto);
+    public S3PreSignedUrlResponseDto getPreSignedUrlForPut(@RequestBody S3PreSignedUrlRequestDto s3PreSignedUrlRequestDto,  @RequestHeader("Authorization") String bearerToken){
+        String preSignedUrl = s3PreSignedUrlService.getPreSignedURLForPut(s3PreSignedUrlRequestDto, bearerToken);
         return S3PreSignedUrlResponseDto.builder().preSignedUrl(preSignedUrl).build();
     }
 
     @PostMapping("/viewurl")
-    public S3PreSignedUrlResponseDto getPreSignedUrlForGet(@RequestBody S3PreSignedUrlRequestDto s3PreSignedUrlRequestDto,  @RequestHeader("Authorization") String accessToken){
-        s3PreSignedUrlRequestDto.setAccessToken(accessToken.substring(7));
-        String preSignedUrl = s3PreSignedUrlService.getPreSignedURLForGet(s3PreSignedUrlRequestDto);
+    public S3PreSignedUrlResponseDto getPreSignedUrlForGet(@RequestBody S3PreSignedUrlRequestDto s3PreSignedUrlRequestDto,  @RequestHeader("Authorization") String bearerToken){
+        String preSignedUrl = s3PreSignedUrlService.getPreSignedURLForGet(s3PreSignedUrlRequestDto, bearerToken);
         return S3PreSignedUrlResponseDto.builder().preSignedUrl(preSignedUrl).build();
     }
 }

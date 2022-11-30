@@ -15,14 +15,12 @@ public class VideoController {
     private final VideoService videoService;
 
     @PostMapping("/createdat")
-    public VideoCreatedAtResponseDto getVideoCreatedAt(@RequestBody VideoCreatedAtRequestDto videoCreatedAtRequestDto, @RequestHeader("Authorization") String accessToken) {
-        videoCreatedAtRequestDto.setAccessToken(accessToken.substring(7));
-        return videoService.getVideoCreatedAt(videoCreatedAtRequestDto);
+    public VideoCreatedAtResponseDto getVideoCreatedAt(@RequestBody VideoCreatedAtRequestDto videoCreatedAtRequestDto, @RequestHeader("Authorization") String bearerToken) {
+        return videoService.getVideoCreatedAt(videoCreatedAtRequestDto, bearerToken);
     }
 
     @PostMapping("/delete")
-    public ResponseEntity deleteVideo(@RequestBody VideoDeleteRequestDto videoDeleteRequestDto, @RequestHeader("Authorization") String accessToken) {
-        videoDeleteRequestDto.setAccessToken(accessToken.substring(7));
-        return videoService.deleteVideo(videoDeleteRequestDto);
+    public ResponseEntity deleteVideo(@RequestBody VideoDeleteRequestDto videoDeleteRequestDto, @RequestHeader("Authorization") String bearerToken) {
+        return videoService.deleteVideo(videoDeleteRequestDto, bearerToken);
     }
 }

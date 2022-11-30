@@ -4,7 +4,6 @@ import ITerview.iterview.Domain.auth.Member;
 import ITerview.iterview.Domain.main.Category;
 import ITerview.iterview.Domain.main.Question;
 import ITerview.iterview.Domain.main.Video;
-import ITerview.iterview.Dto.main.MyPageMyQuestionsRequestDto;
 import ITerview.iterview.Dto.main.MyPageMyQuestionsResponseDto;
 import ITerview.iterview.Dto.main.QuestionDto;
 import ITerview.iterview.ExceptionHandler.BizException;
@@ -16,6 +15,7 @@ import ITerview.iterview.Repository.VideoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +31,16 @@ public class MyPageService {
     private final TokenProvider tokenProvider;
     private final MemberRepository memberRepository;
 
+    public static final String BEARER_PREFIX = "Bearer ";
+
+    private String resolveToken(String bearerToken) {
+        // bearer : 123123123123123 -> return 123123123123123123
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
+            return bearerToken.substring(7);
+        }
+        return null;
+    }
+
     public Member findByAccessToken(String accessToken) {
         String userEmail = tokenProvider.getMemberEmailByToken(accessToken);
         Member member = memberRepository.findByEmail(userEmail)
@@ -38,8 +48,8 @@ public class MyPageService {
         return member;
     }
 
-    public MyPageMyQuestionsResponseDto getMyQuestions(MyPageMyQuestionsRequestDto myPageMyQuestionsRequestDto) {
-        String accessToken = myPageMyQuestionsRequestDto.getAccessToken();
+    public MyPageMyQuestionsResponseDto getMyQuestions(String bearerToken) {
+        String accessToken = resolveToken(bearerToken);
         Member member = findByAccessToken(accessToken);
         List<Video> videos = videoRepository.findByMember(member);
 

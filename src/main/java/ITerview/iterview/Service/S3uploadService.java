@@ -17,6 +17,7 @@ import ITerview.iterview.Repository.VideoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
@@ -31,6 +32,15 @@ public class S3uploadService {
     private final MemberRepository memberRepository;
     private final QuestionRepository questionRepository;
     private final TokenProvider tokenProvider;
+    public static final String BEARER_PREFIX = "Bearer ";
+
+    private String resolveToken(String bearerToken) {
+        // bearer : 123123123123123 -> return 123123123123123123
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
+            return bearerToken.substring(7);
+        }
+        return null;
+    }
 
     public Member findByAccessToken(String accessToken){
         String userEmail = tokenProvider.getMemberEmailByToken(accessToken);
@@ -39,9 +49,9 @@ public class S3uploadService {
         return member;
     }
 
-    public VideoDto uploads(VideoUploadDto videoUploadDto) throws Exception{
+    public VideoDto uploads(VideoUploadDto videoUploadDto, String bearerToken) throws Exception{
+        String accessToken = resolveToken(bearerToken);
         Long questionId = videoUploadDto.getQuestionId();
-        String accessToken = videoUploadDto.getAccessToken();
         MultipartFile videoFile = videoUploadDto.getVideo();
 
 

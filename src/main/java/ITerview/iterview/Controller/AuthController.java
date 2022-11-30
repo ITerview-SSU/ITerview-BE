@@ -35,12 +35,12 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity logout(@RequestHeader("Authorization") String accessToken){
-        return authService.logout(accessToken.substring(7));
+    public ResponseEntity logout(@RequestHeader("Authorization") String bearerToken){
+        return authService.logout(bearerToken);
     }
 
     @PostMapping("/info")
-    public MemberRespDTO info(@RequestHeader("Authorization") String accessToken){
-        return authService.getInfo(accessToken.substring(7));
+    public MemberRespDTO info(@RequestHeader("Authorization") String bearerToken){
+        return authService.getInfo(bearerToken);
     }
 }
