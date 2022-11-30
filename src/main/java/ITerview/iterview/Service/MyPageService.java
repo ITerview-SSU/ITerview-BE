@@ -4,6 +4,7 @@ import ITerview.iterview.Domain.auth.Member;
 import ITerview.iterview.Domain.main.Category;
 import ITerview.iterview.Domain.main.Question;
 import ITerview.iterview.Domain.main.Video;
+import ITerview.iterview.Dto.main.MyPageMyQuestionsByCategoryResponseDto;
 import ITerview.iterview.Dto.main.MyPageMyQuestionsResponseDto;
 import ITerview.iterview.Dto.main.QuestionDto;
 import ITerview.iterview.ExceptionHandler.BizException;
@@ -51,8 +52,8 @@ public class MyPageService {
     public MyPageMyQuestionsResponseDto getMyQuestions(String bearerToken) {
         String accessToken = resolveToken(bearerToken);
         Member member = findByAccessToken(accessToken);
-        List<Video> videos = videoRepository.findByMember(member);
 
+        List<Video> videos = videoRepository.findByMember(member);
         Set<Question> questionList = questionRepository.findByVideos(videos);
 
         MyPageMyQuestionsResponseDto myPageMyQuestionsResponseDto = new MyPageMyQuestionsResponseDto();
@@ -69,5 +70,43 @@ public class MyPageService {
             myPageMyQuestionsResponseDto.getQuestions().add(questionDto);
         }
         return myPageMyQuestionsResponseDto;
+    }
+
+    public MyPageMyQuestionsByCategoryResponseDto getMyQuestionsByCategory(String categoryName, String bearerToken) {
+        String accessToken = resolveToken(bearerToken);
+        Member member = findByAccessToken(accessToken);
+
+        List<Video> videos = videoRepository.findByMember(member);
+        Set<Question> questionList = questionRepository.findByVideos(videos);
+
+        List<Question> questionsForReturn = new ArrayList<>();
+
+        for(Question question : questionList){
+            List<Category> categoriesOfQuestion = question.getCategories();
+            for(Category categoryOfQuestion : categoriesOfQuestion){
+                if(categoryOfQuestion.getCategory_name().equals(categoryName)){
+                    questionsForReturn.add(question);
+                }
+            }
+        }
+
+        Integer questionCount = questionsForReturn.size();
+
+        MyPageMyQuestionsByCategoryResponseDto myPageMyQuestionsByCategoryResponseDto = new MyPageMyQuestionsByCategoryResponseDto();
+        myPageMyQuestionsByCategoryResponseDto.setQuestionCount(questionCount);
+        for(Question question : questionsForReturn){
+            QuestionDto questionDto = QuestionDto.builder()
+                    .questionId(question.getId())
+                    .questionString(question.getQuestion())
+                    .build();
+
+            List<Category> categoryList = question.getCategories();
+            List<String> categories = new ArrayList<>();
+            categoryList.forEach(category -> categories.add(category.getCategory_name()));
+            questionDto.setCategories(categories);
+            myPageMyQuestionsByCategoryResponseDto.getQuestions().add(questionDto);
+        }
+
+        return myPageMyQuestionsByCategoryResponseDto;
     }
 }

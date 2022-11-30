@@ -1,5 +1,6 @@
 package ITerview.iterview.Controller;
 
+import ITerview.iterview.Dto.main.MyPageMyQuestionsByCategoryResponseDto;
 import ITerview.iterview.Dto.main.MyPageMyQuestionsResponseDto;
 import ITerview.iterview.Service.MyPageService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ public class MyPageController {
     }
 
     @GetMapping("/answered/category")
-    public void getMyQuestionsByCategory(@RequestHeader("Authorization") String accessToken, @RequestParam(name="category") String category){
-        return;
+    public MyPageMyQuestionsByCategoryResponseDto getMyQuestionsByCategory(@RequestHeader("Authorization") String bearerToken, @RequestParam(name="category") String category){
+        return myPageService.getMyQuestionsByCategory(category, bearerToken);
     }
 }
