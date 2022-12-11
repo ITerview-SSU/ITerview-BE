@@ -13,18 +13,18 @@ public class QuestionController {
     private final QuestionService questionService;
 
     @GetMapping("/questions")
-    public QuestionByCategoryDto getQuestions(@RequestParam(name = "category") String category){
-        return questionService.getQuestions(category);
+    public QuestionByCategoryDto getQuestions(@RequestParam(name = "category") String categoryId){
+        return questionService.getQuestions(categoryId);
     }
 
     @GetMapping("/questions/random")
-    public QuestionByCategoryDto getRandomQuestions(@RequestParam(name = "category") String category){
-        return questionService.getRandomQuestions(category);
+    public QuestionByCategoryDto getRandomQuestions(@RequestParam(name = "category") String categoryId){
+        return questionService.getRandomQuestions(categoryId);
     }
 
     @GetMapping("/questions/count")
-    public QuestionCountByCategoryDto getQuestionCountByCategory(@RequestParam(name = "category") String category){
-        return questionService.getQuestionCountByCategory(category);
+    public QuestionCountByCategoryDto getQuestionCountByCategory(@RequestParam(name = "category") String categoryId){
+        return questionService.getQuestionCountByCategory(categoryId);
     }
 
 }

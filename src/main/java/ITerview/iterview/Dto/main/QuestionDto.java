@@ -12,6 +12,7 @@ public class QuestionDto {
     private String questionString;
 
     private List<String> categories = new ArrayList<>();
+    private List<Integer> categoryIds = new ArrayList<>();
 
     @Builder
     public QuestionDto(Long questionId, String questionString) {

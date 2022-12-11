@@ -10,6 +10,7 @@ import ITerview.iterview.Dto.main.QuestionDto;
 import ITerview.iterview.ExceptionHandler.BizException;
 import ITerview.iterview.ExceptionHandler.MemberExceptionType;
 import ITerview.iterview.Jwt.TokenProvider;
+import ITerview.iterview.Repository.CategoryRepository;
 import ITerview.iterview.Repository.MemberRepository;
 import ITerview.iterview.Repository.QuestionRepository;
 import ITerview.iterview.Repository.VideoRepository;
@@ -28,6 +29,7 @@ import java.util.Set;
 public class MyPageService {
     private final QuestionRepository questionRepository;
     private final VideoRepository videoRepository;
+    private final CategoryRepository categoryRepository;
 
     private final TokenProvider tokenProvider;
     private final MemberRepository memberRepository;
@@ -64,17 +66,26 @@ public class MyPageService {
                     .build();
 
             List<Category> categoryList = question.getCategories();
+
             List<String> categories = new ArrayList<>();
             categoryList.forEach(category -> categories.add(category.getCategory_name()));
             questionDto.setCategories(categories);
+
+            List<Integer> categoryIds = new ArrayList<>();
+            categoryList.forEach(category -> categoryIds.add(Math.toIntExact(category.getId())));
+            questionDto.setCategoryIds(categoryIds);
+
             myPageMyQuestionsResponseDto.getQuestions().add(questionDto);
         }
         return myPageMyQuestionsResponseDto;
     }
 
-    public MyPageMyQuestionsByCategoryResponseDto getMyQuestionsByCategory(String categoryName, String bearerToken) {
+    public MyPageMyQuestionsByCategoryResponseDto getMyQuestionsByCategory(String categoryId, String bearerToken) {
         String accessToken = resolveToken(bearerToken);
         Member member = findByAccessToken(accessToken);
+        Category category = categoryRepository.findById(Long.parseLong(categoryId));
+        String categoryName = category.getCategory_name();
+
 
         List<Video> videos = videoRepository.findByMember(member);
         Set<Question> questionList = questionRepository.findByVideos(videos);
@@ -102,9 +113,14 @@ public class MyPageService {
 
             List<Category> categoryList = question.getCategories();
             List<String> categories = new ArrayList<>();
-            categoryList.forEach(category -> categories.add(category.getCategory_name()));
+
+            categoryList.forEach(categoryEach -> categories.add(category.getCategory_name()));
             questionDto.setCategories(categories);
             myPageMyQuestionsByCategoryResponseDto.getQuestions().add(questionDto);
+
+            List<Integer> categoryIds = new ArrayList<>();
+            categoryList.forEach(categoryEach -> categoryIds.add(Math.toIntExact(category.getId())));
+            questionDto.setCategoryIds(categoryIds);
         }
 
         return myPageMyQuestionsByCategoryResponseDto;

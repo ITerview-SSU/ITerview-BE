@@ -18,7 +18,7 @@ public class MyPageController {
     }
 
     @GetMapping("/answered/category")
-    public MyPageMyQuestionsByCategoryResponseDto getMyQuestionsByCategory(@RequestHeader("Authorization") String bearerToken, @RequestParam(name="category") String category){
-        return myPageService.getMyQuestionsByCategory(category, bearerToken);
+    public MyPageMyQuestionsByCategoryResponseDto getMyQuestionsByCategory(@RequestHeader("Authorization") String bearerToken, @RequestParam(name="category") String categoryId){
+        return myPageService.getMyQuestionsByCategory(categoryId, bearerToken);
     }
 }

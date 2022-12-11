@@ -25,4 +25,11 @@ public class CategoryRepository{
                 .setParameter("name", name)
                 .getSingleResult();
     }
+
+    public Category findById(Long categoryId){
+        return em
+                .createQuery("select c from Category c where c.id = :categoryId", Category.class)
+                .setParameter("categoryId", categoryId)
+                .getSingleResult();
+    }
 }
