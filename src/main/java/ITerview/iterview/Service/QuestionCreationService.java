@@ -26,6 +26,7 @@ public class QuestionCreationService {
     public void createQuestions(){
         List<List<String>> records = new ArrayList<>();
         String path = System.getProperty("user.dir") + "/" + QUESTIONS_FILE;
+        System.out.println("questions.txt 의 경로 : " +  path);
         try (Scanner scanner = new Scanner(new File(path))) {
             while (scanner.hasNextLine()) {
                 List<String> questionParams = getRecordFromLine(scanner.nextLine());
