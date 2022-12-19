@@ -28,6 +28,7 @@ import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -84,7 +85,7 @@ public class TranscriptionService {
     /* **** Start Transcription Job Method******/
     public StartTranscriptionJobResult startTranscriptionJob(String key){
         Media media = new Media().withMediaFileUri(s3Client.getUrl(bucket, key).toExternalForm());
-        String jobName = key.replace("/", "__");
+        String jobName = UUID.randomUUID().toString();
         StartTranscriptionJobRequest startTranscriptionJobRequest = new StartTranscriptionJobRequest()
                 .withLanguageCode(LanguageCode.KoKR).withTranscriptionJobName(jobName).withMedia(media);
         StartTranscriptionJobResult startTranscriptionJobResult = transcribeClient()
@@ -162,11 +163,12 @@ public class TranscriptionService {
 
     public TranscriptionResponseDTO extractSpeechTextFromVideo(TranscriptionRequestDTO transcriptionRequestDTO) {
         String username = findByAccessToken(transcriptionRequestDTO.getAccessToken()).getUsername();
+        String newEmail = findByAccessToken(transcriptionRequestDTO.getAccessToken()).getEmail().replace("@", "__");
         String filename = findFilenameByQuestionIdAndUsername(transcriptionRequestDTO.getQuestionId(), username);
         System.out.println("Request to extract Speech Text from Video : " + username + "/" + filename);
 
         // Start Transcription Job and get result
-        StartTranscriptionJobResult startTranscriptionJobResult = startTranscriptionJob(username + "/" + filename);
+        StartTranscriptionJobResult startTranscriptionJobResult = startTranscriptionJob(newEmail + "/" + filename);
 
         // Get name of job started for the file
         String transcriptionJobName = startTranscriptionJobResult.getTranscriptionJob().getTranscriptionJobName();

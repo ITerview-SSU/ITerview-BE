@@ -16,7 +16,7 @@ public class InitDBSettingRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 //        authService.createAuthorities();
-        categoryCreationService.createCategories();
+//        categoryCreationService.createCategories();
         questionCreationService.createQuestions();
     }
 }

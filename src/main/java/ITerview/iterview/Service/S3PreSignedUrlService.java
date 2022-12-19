@@ -98,7 +98,7 @@ public class S3PreSignedUrlService {
         String filename = s3PreSignedUrlRequestDto.getFilename();
 
         String preSignedURL = "";
-        String newFileName = member.getUsername() + "/" + filename;
+        String newFileName = member.getEmail().replace("@", "__") + "/" + filename;
 
         saveVideoEntity(member, s3PreSignedUrlRequestDto.getQuestionId(), filename);
 
@@ -139,7 +139,7 @@ public class S3PreSignedUrlService {
         String filename = video.getFilename();
 
         String preSignedURL = "";
-        String realFilename = username + "/" + filename;
+        String realFilename = member.getEmail().replace("@", "__") + "/" + filename;
 
         Date expiration = new Date();
         long expTimeMillis = expiration.getTime();
